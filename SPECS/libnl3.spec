@@ -1,12 +1,11 @@
 Name: libnl3
-Version: 3.7.0
+Version: 3.9.0
 Release: 1%{?dist}
 Summary: Convenience library for kernel netlink sockets
-License: LGPLv2
+License: LGPL-2.1-only
 URL: http://www.infradead.org/~tgr/libnl/
 
-%define rcversion %{nil}
-%define fullversion %{version}%{rcversion}
+%global version_path libnl%(echo %{version} | tr . _)
 
 %if 0%{?rhel} > 8
 # Disable python3 build by default
@@ -15,8 +14,8 @@ URL: http://www.infradead.org/~tgr/libnl/
 %bcond_without python3
 %endif
 
-Source: http://www.infradead.org/~tgr/libnl/files/libnl-%{fullversion}.tar.gz
-Source1: http://www.infradead.org/~tgr/libnl/files/libnl-doc-%{fullversion}.tar.gz
+Source0: https://github.com/thom311/libnl/releases/download/%{version_path}/libnl-%{version}.tar.gz
+Source1: https://github.com/thom311/libnl/releases/download/%{version_path}/libnl-doc-%{version}.tar.gz
 
 #Patch1: some.patch
 
@@ -67,6 +66,7 @@ This package contains libnl3 API documentation
 Summary: libnl3 binding for Python 3
 %{?python_provide:%python_provide python3-libnl3}
 BuildRequires: python3-devel
+BuildRequires: python3-setuptools
 BuildRequires: make
 Requires: %{name} = %{version}-%{release}
 
@@ -75,7 +75,7 @@ Python 3 bindings for libnl3
 %endif
 
 %prep
-%autosetup -p1 -n libnl-%{fullversion}
+%autosetup -p1 -n libnl-%{version}
 
 tar -xzf %SOURCE1
 
@@ -116,35 +116,35 @@ popd
 %ldconfig_scriptlets cli
 
 %files
-%doc COPYING
+%license COPYING
 %exclude %{_libdir}/libnl-cli*.so.*
 %exclude %{_libdir}/libnl*-3.a
 %{_libdir}/libnl-*.so.*
 %config(noreplace) %{_sysconfdir}/*
 
 %files devel
-%doc COPYING
+%license COPYING
 %{_includedir}/libnl3/netlink/
 %dir %{_includedir}/libnl3/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 
 %files cli
-%doc COPYING
+%license COPYING
 %{_libdir}/libnl-cli*.so.*
 %{_libdir}/libnl/
 %{_bindir}/*
 %{_mandir}/man8/*
 
 %files doc
-%doc COPYING
-%doc libnl-doc-%{fullversion}/*.html
-%doc libnl-doc-%{fullversion}/*.css
-%doc libnl-doc-%{fullversion}/stylesheets/*
-%doc libnl-doc-%{fullversion}/images/*
-%doc libnl-doc-%{fullversion}/images/icons/*
-%doc libnl-doc-%{fullversion}/images/icons/callouts/*
-%doc libnl-doc-%{fullversion}/api/*
+%license COPYING
+%doc libnl-doc-%{version}/*.html
+%doc libnl-doc-%{version}/*.css
+%doc libnl-doc-%{version}/stylesheets/*
+%doc libnl-doc-%{version}/images/*
+%doc libnl-doc-%{version}/images/icons/*
+%doc libnl-doc-%{version}/images/icons/callouts/*
+%doc libnl-doc-%{version}/api/*
 
 %if %{with python3}
 %files -n python3-libnl3
@@ -153,6 +153,12 @@ popd
 %endif
 
 %changelog
+* Mon Dec  4 2023 Thomas Haller <thaller@redhat.com> - 3.9.0-1
+- Update to 3.9.0 release (RHEL-17843)
+
+* Fri Dec  1 2023 Thomas Haller <thaller@redhat.com> - 3.8.0-1
+- Update to 3.8.0 release (RHEL-17843)
+
 * Wed Jul  6 2022 Thomas Haller <thaller@redhat.com> - 3.7.0-1
 - Update to 3.7.0 release (rh #2075841)
 
