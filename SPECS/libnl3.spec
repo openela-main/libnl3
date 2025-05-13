@@ -1,5 +1,5 @@
 Name: libnl3
-Version: 3.9.0
+Version: 3.11.0
 Release: 1%{?dist}
 Summary: Convenience library for kernel netlink sockets
 License: LGPL-2.1-only
@@ -153,6 +153,9 @@ popd
 %endif
 
 %changelog
+* Tue Nov 12 2024 Thomas Haller <thaller@redhat.com> - 3.11.0-1
+- Update to 3.11.0 release (RHEL-67129)
+
 * Mon Dec  4 2023 Thomas Haller <thaller@redhat.com> - 3.9.0-1
 - Update to 3.9.0 release (RHEL-17843)
 
